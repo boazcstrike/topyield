@@ -1,0 +1,16 @@
+{
+  "name": "topyield",
+  "version": "0.1.1",
+  "description": "Open Source Inventory System",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "9.3.5",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  }
+}
