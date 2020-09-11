@@ -1,10 +1,12 @@
 from django.db import models
 from django.conf import settings
 
+
 class CreatedInfo(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
-    created_by = models.ForeignKey(settings.USER_AUTH_MODEL, on_delete=models.PROTECT)
-    
+    created_by = models.ForeignKey(
+        settings.USER_AUTH_MODEL, on_delete=models.PROTECT)
+
     class Meta:
         ordering = ['-created_at']
         abstract = True

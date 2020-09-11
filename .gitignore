@@ -1,8 +1,0 @@
-*/node_modules
-*/ENV
-*/*/.env
-*/.env
-.env
-*/*/.env.save
-*/.env.save
-.env.save
