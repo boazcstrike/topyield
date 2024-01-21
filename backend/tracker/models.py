@@ -33,7 +33,7 @@ class Expense(UpdatedInfo):
     related_name='expense_category',
     )
   shop = models.ForeignKey(
-    Category,
+    Shop,
     on_delete=models.PROTECT,
     related_name='expense_shop',
     )
