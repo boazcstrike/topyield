@@ -15,6 +15,9 @@ class WorldCurrency(UpdatedInfo):
   def __str__(self):
       return f'{self.symbol} {self.name} {self.code}'
 
+  class Meta:
+    verbose_name_plural = 'World Currencies'
+
 
 class Shop(UpdatedInfo):
   name = models.CharField(max_length=255)
@@ -23,6 +26,11 @@ class Shop(UpdatedInfo):
 
   def __str__(self):
     return self.name
+
+  def save(self, *args, **kwargs):
+    if self.name is not None or self.name is not '':
+      self.name = self.name.lower()
+    super(Shop, self).save(*args, **kwargs)
 
 
 class Expense(UpdatedInfo):
