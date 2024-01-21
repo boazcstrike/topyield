@@ -176,4 +176,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-GOOGLE_CREDENTIAL_JSON_FILE = os.path.join(BASE_DIR, 'config', 'topyield-411905-07ab6d744692.json')
+GOOGLE_CREDENTIAL_JSON_FILE = os.path.join(BASE_DIR, 'config', config('GOOGLE_KEY_FILE_NAME'))
+
+CLOUDMERSIVE_API_KEY = config('CLOUDMERSIVE_API_KEY')

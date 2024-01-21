@@ -13,7 +13,6 @@ class Command(BaseCommand):
 
     print('getting sheet contents...')
     shtsc = shts.get_sheet_contents(sheet_name)
-    print('done!')
 
     print('processing sheet contents...')
     for i, row in enumerate(shtsc):
@@ -47,7 +46,7 @@ class Command(BaseCommand):
         print(f'new shop {shop.id} {shop.name} created!')
 
       expense = Expense.objects.create(
-        description=category_name,
+        description=description,
         category=category,
         shop=shop,
         currency=currency,
@@ -59,7 +58,9 @@ class Command(BaseCommand):
         conversion=conversion,
         created_by=x,
         updated_by=x,
+        cell=f'A{i+2}',
       )
+      print(f'expense {currency.name} {expense.total} recorded')
 
       shts.write_to_sheet(sheet_name, f'A{i+2}', 'TEST')
       print(f'row A[{i}] saved!')
