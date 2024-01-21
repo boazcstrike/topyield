@@ -1,7 +1,21 @@
 from django.db import models
 
+from core.models import (
+  Category,
+  UpdatedInfo,
+)
 
-class Shop(models.Model):
+
+class WorldCurrency(UpdatedInfo):
+  name = models.CharField(max_length=255, unique=True)
+  symbol = models.CharField(max_length=255, unique=True)
+  code = models.CharField(max_length=255, unique=True)
+
+  def __str__(self):
+      return self.symbol + self.name
+
+
+class Shop(UpdatedInfo):
   name = models.CharField(max_length=255)
   address = models.CharField(max_length=255, blank=True, null=True)
   contact = models.CharField(max_length=255, blank=True, null=True)
@@ -10,17 +24,29 @@ class Shop(models.Model):
     return self.name
 
 
-class Expense(models.Model):
-  description = models.CharField(max_length=255)
-  category = models.CharField(max_length=255)
-  brand_shop = models.CharField(max_length=255)
-  currency = models.CharField(max_length=255)
-  total = models.DecimalField(max_digits=10, decimal_places=2)
-  month = models.IntegerField()
-  day = models.IntegerField()
-  year = models.IntegerField()
-  php = models.DecimalField(max_digits=10, decimal_places=2)
-  conversion = models.IntegerField()
+class Expense(UpdatedInfo):
+  description = models.CharField(max_length=255, null=True, blank=True)
+  category = models.ForeignKey(
+    Category,
+    on_delete=models.PROTECT,
+    related_name='expense_category',
+    )
+  shop = models.ForeignKey(
+    Category,
+    on_delete=models.PROTECT,
+    related_name='expense_shop',
+    )
+  currency = models.ForeignKey(
+    WorldCurrency,
+    on_delete=models.PROTECT,
+    related_name='expense_currency',
+    )
+  total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+  month = models.IntegerField(blank=True, null=True)
+  day = models.IntegerField(blank=True, null=True)
+  year = models.IntegerField(blank=True, null=True)
+  php = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+  conversion = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
   def __str__(self):
     return str(self.php)

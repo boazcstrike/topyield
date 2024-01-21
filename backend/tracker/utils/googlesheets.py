@@ -64,6 +64,22 @@ class GoogleSheet:
     except Exception as e:
       self.handle_exceptions(e)
 
+  def write_to_sheet(self, sheet_name: str, cell: str, content: str):
+    """
+    Writes data to a sheet in the Google Sheet.
+
+    Args:
+      sheet_name (str): The name of the sheet to write the data to.
+      data (list): The data to write to the sheet.
+    """
+    try:
+      gc = GoogleSheet.connect_to_google_sheets()
+      spreadsheet = gc.open_by_url(self.spreadsheet_url)
+      worksheet = spreadsheet.worksheet(sheet_name)
+      worksheet.update(cell, content)
+    except Exception as e:
+      self.handle_exceptions(e)
+
   def test(self):
     """
     Performs a test operation on the Google Sheet.
