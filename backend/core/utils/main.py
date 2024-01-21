@@ -1,3 +1,6 @@
+from fuzzywuzzy import fuzz
+
+
 def number_to_letter_mapping(number):
     """
     # Example usage:
@@ -10,3 +13,8 @@ def number_to_letter_mapping(number):
         return "Invalid"
 
 
+def is_name_similar(shop_name, existing_shop_names, similarity_threshold=90):
+    for existing_name in existing_shop_names:
+        if fuzz.ratio(shop_name.lower(), existing_name.lower()) >= similarity_threshold:
+            return True
+    return False
