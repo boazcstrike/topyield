@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from tracker.utils.googlesheets import GoogleSheet
 from tracker.models import Expense, Shop, Category, WorldCurrency
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 class Command(BaseCommand):
   help = 'process the tracker app'
@@ -18,7 +19,7 @@ class Command(BaseCommand):
     for i, row in enumerate(shtsc):
 
       # temporary fix
-      if i < 492:
+      if i < 1057:
         continue
 
       print(f'processing row {i}...')
@@ -27,20 +28,24 @@ class Command(BaseCommand):
       category_name = row['category']
       shop_name = row['brand_shop']
       currency = row['currency']
-      total = row['total']
 
+      total = row['total']
+      php = row['php']
       month = row['month']
+      day = row['day']
+      year = row['year']
+      conversion = row['conversion']
+
       if month == '':
         month = None
-      day = row['day']
       if day == '':
         day = None
-      year = row['year']
       if year == '':
         year = None
 
-      php = row['php']
-      conversion = row['conversion']
+      total = shts.convert_to_positive_decimal(total)
+      php = shts.convert_to_positive_decimal(php)
+
 
       category, _created = Category.objects.get_or_create(
         name=category_name,
