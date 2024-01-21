@@ -19,10 +19,10 @@ class Command(BaseCommand):
     for i, row in enumerate(shtsc):
 
       # temporary fix
-      if i < 1057:
+      if i < 1522:
         continue
 
-      print(f'processing row {i}...')
+      print(f'processing row [{i}]...')
 
       description = row['description']
       category_name = row['category']

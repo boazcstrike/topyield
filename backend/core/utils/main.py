@@ -13,8 +13,18 @@ def number_to_letter_mapping(number):
         return "Invalid"
 
 
-def is_name_similar(shop_name, existing_shop_names, similarity_threshold=90):
+def is_name_similar(
+        shop_name: str,
+        existing_shop_names: list,
+        similarity_threshold=75) -> list:
+    similar_names = []
+
     for existing_name in existing_shop_names:
-        if fuzz.ratio(shop_name.lower(), existing_name.lower()) >= similarity_threshold:
-            return True
-    return False
+        if existing_name.lower() != shop_name.lower():
+            similarity = fuzz.ratio(shop_name.lower(), existing_name.lower())
+            if similarity >= similarity_threshold:
+                similar_names.append({
+                    shop_name: {
+                        existing_name: similarity
+                    }})
+    return similar_names
