@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from core.utils.main import is_name_similar
-from core.models import Category
+from core.models import Category, Expense
 
 class Command(BaseCommand):
   help = 'process the tracker app'
@@ -12,31 +11,16 @@ class Command(BaseCommand):
     category_list = list(Category.objects.all().values_list('name', flat=True))
     print(category_list)
 
-    # Count the occurrences of each category
-    category_counts = {}
-    for category in category_list:
-      category_counts[category] = category_counts.get(category, 0) + 1
+    # # Find categories with more than 4 occurrences
+    # categories_to_update = Category.objects.annotate(expense_count=Count('expense')).filter(expense_count__gt=4)
 
-    # Find the main categories with more repeated values
-    main_categories = []
-    for category, count in category_counts.items():
-      if count > len(category_list) / 2:
-        main_categories.append(category)
+    # for category in categories_to_update:
+    #     # Find expenses with the same shop name but no category
+    #     expenses_to_update = Expense.objects.filter(shop=category.shop, category=None)
 
-    # Find the less repeated categories
-    less_repeated_categories = []
-    for category, count in category_counts.items():
-      if count < len(category_list) / 2:
-        less_repeated_categories.append(category)
+    #     # Update the expenses with the category that has more than 4 occurrences
+    #     expenses_to_update.update(category=category)
 
-    # Add the less repeated categories to the list of words that can be included with the main categories
-    words_to_include = main_categories + less_repeated_categories
+    print('Categories fixed.')
 
-    print(f'Main categories: {main_categories}')
-    print(f'Less repeated categories: {less_repeated_categories}')
-    print(f'Words to include: {words_to_include}')
 
-    for category in category_list:
-      category_list_wo_selected_category = [category for category in category_list if category != 'category']
-      if is_name_similar(category, category_list_wo_selected_category):
-        print(f'category {category} is similar to another category')
