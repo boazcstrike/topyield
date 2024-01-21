@@ -10,33 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import environ
+from decouple import config
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-# reading .env file
-environ.Env.read_env()
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,10 +36,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
 
     # loks
-    'core'
+    'users',
+    'core',
+    'tracker',
 ]
 
 MIDDLEWARE = [
@@ -94,15 +81,13 @@ WSGI_APPLICATION = 'topyield.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('POSTGRESQL_NAME'),
-        'USER': env('POSTGRESQL_USER'),
-        'PASSWORD': env('POSTGRESQL_PASSWORD'),
-        'HOST': env('POSTGRESQL_HOST'),
-        'PORT': env('POSTGRESQL_PORT'),
+        'NAME': config('POSTGRESQL_NAME'),
+        'USER': config('POSTGRESQL_USER'),
+        'PASSWORD': config('POSTGRESQL_PASSWORD'),
+        'HOST': config('POSTGRESQL_HOST'),
+        'PORT': config('POSTGRESQL_PORT'),
     }
 }
-
-# User
 
 USER_AUTH_MODEL = 'users.User'
 
@@ -187,3 +172,8 @@ REST_FRAMEWORK = {
 # CORS
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+GOOGLE_CREDENTIAL_JSON_FILE = os.path.join(BASE_DIR, 'config', 'topyield-411905-07ab6d744692.json')
