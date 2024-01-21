@@ -83,6 +83,5 @@ class Command(BaseCommand):
       print(f'expense {currency.name} {expense.total} recorded')
 
       shts.write_to_sheet(sheet_name, f'A{i+2}', i)
-      print(f'row A[{i+2}] saved!')
+      print(f'row A[{i+2}] saved!\n')
 
-      print('done!')
