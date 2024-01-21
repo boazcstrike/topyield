@@ -1,6 +1,7 @@
 import gspread
 from django.conf import settings
 from oauth2client.service_account import ServiceAccountCredentials
+from decimal import Decimal
 
 class GoogleSheet:
   """
@@ -79,6 +80,26 @@ class GoogleSheet:
       worksheet.update(cell, content)
     except Exception as e:
       self.handle_exceptions(e)
+
+  def convert_to_positive_decimal(self, value):
+    """
+    Checks if the value is a float and converts it to a positive decimal if it's negative.
+
+    Args:
+      value: The value to check and convert.
+
+    Returns:
+      decimal.Decimal: The converted positive decimal value.
+    """
+    if isinstance(value, float):
+      if value < 0:
+        value = abs(value)
+
+    if isinstance(value, str):
+      if value.startswith("(") and value.endswith(")"):
+        value = value[1:-1]
+
+    return Decimal(value)
 
   def test(self):
     """
