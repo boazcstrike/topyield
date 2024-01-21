@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from tracker.utils.cloudmersive import CloudMersiveAPI
 
 class Command(BaseCommand):
-  help = 'Description of your command'
+  help = 'syncs the currency list from an API - cloudmersive'
 
   def handle(self, *args, **options):
     cm = CloudMersiveAPI()
