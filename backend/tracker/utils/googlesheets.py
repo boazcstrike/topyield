@@ -1,7 +1,7 @@
 import gspread
 from django.conf import settings
 from oauth2client.service_account import ServiceAccountCredentials
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 class GoogleSheet:
   """
@@ -99,7 +99,10 @@ class GoogleSheet:
       if value.startswith("(") and value.endswith(")"):
         value = value[1:-1]
 
-    return Decimal(value)
+    try:
+        return Decimal(value)
+    except InvalidOperation:
+        print(f"Invalid value: {value}")
 
   def test(self):
     """

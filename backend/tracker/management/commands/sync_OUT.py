@@ -17,11 +17,6 @@ class Command(BaseCommand):
 
     print('processing sheet contents...')
     for i, row in enumerate(shtsc):
-
-      # temporary fix
-      if i < 1522:
-        continue
-
       print(f'processing row [{i}]...')
 
       description = row['description']
@@ -45,7 +40,6 @@ class Command(BaseCommand):
 
       total = shts.convert_to_positive_decimal(total)
       php = shts.convert_to_positive_decimal(php)
-
 
       category, _created = Category.objects.get_or_create(
         name=category_name,
