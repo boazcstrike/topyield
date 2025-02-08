@@ -8,7 +8,7 @@ from django.conf import settings
 class BoOpenAI():
     def __init__(self):
         self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
-        self.model = "gpt-4o-mini"
+        self.model = "gpt-4o"
         self.max_tokens = 1800
 
     def convert_gregorian_to_lunar(self, gregorian_date):
@@ -32,7 +32,7 @@ class BoOpenAI():
                                 {
                                     "aspect": "Harmonious relationships",
                                     "percentage": 50,  # based off positive strength of aspect
-                                    "short_reason": "sample short reason"
+                                    "short_reason": "sample short reason, 2 sentences."
                                 },
                                 ...
                             ],
@@ -40,7 +40,7 @@ class BoOpenAI():
                                 {
                                     "aspect": "Relationship conflicts",
                                     "percentage": 25,  # based off negative strength of aspect
-                                    "short_reason": "sample short reason"
+                                    "short_reason": "sample short reason, 2 sentences."
                                 }
                             ]
                         }  
