@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # loks
     'core',
     'tracker',
+
+    'fengshui',
 ]
 
 MIDDLEWARE = [
@@ -177,5 +179,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GOOGLE_CREDENTIAL_JSON_FILE = os.path.join(BASE_DIR, 'config', config('GOOGLE_KEY_FILE_NAME'))
+# GOOGLE_CREDENTIAL_JSON_FILE = ""
 
 CLOUDMERSIVE_API_KEY = config('CLOUDMERSIVE_API_KEY')
+# CLOUDMERSIVE_API_KEY = ""
+
+OPENAI_API_KEY=config("OPENAI_API_KEY")
