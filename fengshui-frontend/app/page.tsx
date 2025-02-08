@@ -1,101 +1,140 @@
-import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+const zodiacData = {
+  reading: {
+    gregorian_calendar: "03/01/1994 08:15",
+    gregorian_lunar_calendar: "01/19/1994 08:15",
+    lunar_calendar: "一月十九 甲戌",
+    zodiac: "Wood Dog",
+    good_luck_colors_for_this_year: ["Green", "Brown", "Gold"],
+    bad_luck_colors_for_this_year: ["Red", "Black"],
+    good_aspects: [
+      {
+        aspect: "Harmonious relationships",
+        short_reason: "Strong social connections foster mutual support.",
+      },
+      {
+        aspect: "Career advancement",
+        short_reason: "Opportunities for growth and recognition in the workplace.",
+      },
+      {
+        aspect: "Financial stability",
+        short_reason: "Smart investments yield positive returns.",
+      },
+      {
+        aspect: "Health improvements",
+        short_reason: "Increase in energy and well-being this year.",
+      },
+      {
+        aspect: "Personal development",
+        short_reason: "Focus on self-growth leads to new insights.",
+      },
+    ],
+    bad_aspects: [
+      {
+        aspect: "Relationship conflicts",
+        short_reason: "Miscommunication may lead to misunderstandings.",
+      },
+      {
+        aspect: "Work-related stress",
+        short_reason: "Increased workload may cause pressure.",
+      },
+      {
+        aspect: "Health concerns",
+        short_reason: "Potential for seasonal illnesses.",
+      },
+      {
+        aspect: "Financial risks",
+        short_reason: "Be cautious with new ventures.",
+      },
+      {
+        aspect: "Travel complications",
+        short_reason: "Possible delays or disruptions in travel plans.",
+      },
+    ],
+  },
 }
+
+export default function ZodiacReading() {
+  const { reading } = zodiacData
+
+  return (
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-3xl font-bold text-center">The Year of the Snake</CardTitle>
+        <p className="text-center mt-1">commencing on January 29, 2025, is characterized by wisdom, transformation, and adaptability. Associated with intelligence and strategic thinking, this year encourages personal growth and careful decision-making. The Wood element introduces flexibility and creativity, promoting deeper reflection and thoughtful planning. Embracing change and long-term strategies will be beneficial during this period. Overall, the Year of the Snake emphasizes introspection and deliberate action.</p>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Basic Information</h2>
+            <p>
+              <strong>Gregorian Calendar:</strong> {reading.gregorian_calendar}
+            </p>
+            <p>
+              <strong>Gregorian Lunar Calendar:</strong> {reading.gregorian_lunar_calendar}
+            </p>
+            <p>
+              <strong>Lunar Calendar:</strong> {reading.lunar_calendar}
+            </p>
+            <p>
+              <strong>Zodiac:</strong> {reading.zodiac}
+            </p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Lucky Colors</h2>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {reading.good_luck_colors_for_this_year.map((color) => (
+                <Badge key={color} variant="outline" className="text-green-600 border-green-600">
+                  {color}
+                </Badge>
+              ))}
+            </div>
+            <h2 className="text-2xl font-semibold mb-2 mt-4">Unlucky Colors</h2>
+            <div className="flex flex-wrap gap-2">
+              {reading.bad_luck_colors_for_this_year.map((color) => (
+                <Badge key={color} variant="outline" className="text-red-600 border-red-600">
+                  {color}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <Separator className="my-6" />
+        <div className="grid grid-cols-1 gap-6">
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Positive Aspects</h2>
+                {reading.good_aspects.map((aspect, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-semibold">{aspect.aspect}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{aspect.short_reason}</p>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Challenging Aspects</h2>
+                {reading.bad_aspects.map((aspect, index) => (
+                  <div key={index} className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-semibold">{aspect.aspect}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{aspect.short_reason}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
