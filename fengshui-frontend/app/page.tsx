@@ -1,140 +1,127 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Progress } from "@/components/ui/progress"
+"use client"
+import React, { useEffect, useState } from 'react';
 
-const zodiacData = {
-  reading: {
-    gregorian_calendar: "03/01/1994 08:15",
-    gregorian_lunar_calendar: "01/19/1994 08:15",
-    lunar_calendar: "一月十九 甲戌",
-    zodiac: "Wood Dog",
-    good_luck_colors_for_this_year: ["Green", "Brown", "Gold"],
-    bad_luck_colors_for_this_year: ["Red", "Black"],
-    good_aspects: [
-      {
-        aspect: "Harmonious relationships",
-        short_reason: "Strong social connections foster mutual support.",
-      },
-      {
-        aspect: "Career advancement",
-        short_reason: "Opportunities for growth and recognition in the workplace.",
-      },
-      {
-        aspect: "Financial stability",
-        short_reason: "Smart investments yield positive returns.",
-      },
-      {
-        aspect: "Health improvements",
-        short_reason: "Increase in energy and well-being this year.",
-      },
-      {
-        aspect: "Personal development",
-        short_reason: "Focus on self-growth leads to new insights.",
-      },
-    ],
-    bad_aspects: [
-      {
-        aspect: "Relationship conflicts",
-        short_reason: "Miscommunication may lead to misunderstandings.",
-      },
-      {
-        aspect: "Work-related stress",
-        short_reason: "Increased workload may cause pressure.",
-      },
-      {
-        aspect: "Health concerns",
-        short_reason: "Potential for seasonal illnesses.",
-      },
-      {
-        aspect: "Financial risks",
-        short_reason: "Be cautious with new ventures.",
-      },
-      {
-        aspect: "Travel complications",
-        short_reason: "Possible delays or disruptions in travel plans.",
-      },
-    ],
-  },
-}
+import { format, parse, isValid } from "date-fns"
+import { cn } from "@/lib/utils"
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Input } from "@/components/ui/input"
+import FengShuiResults from './components/fenshuiresults';
+import { CalendarIcon } from "lucide-react"
 
 export default function ZodiacReading() {
-  const { reading } = zodiacData
+  const [fengShui, setFengShui] = useState(undefined);
+  const [loading, setLoading] = useState(false);
+
+  const [date, setDate] = React.useState<Date>()
+  const [inputValue, setInputValue] = React.useState("")
+  const [error, setError] = React.useState("")
+
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate)
+    setInputValue(selectedDate ? format(selectedDate, "MM/dd/yyyy") : "")
+    setError("")
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+    setInputValue(value)
+
+    if (value === "") {
+      setDate(undefined)
+      setError("")
+      return
+    }
+
+    const parsedDate = parse(value, "MM/dd/yyyy", new Date())
+
+    if (isValid(parsedDate) && value.length === 10) {
+      setDate(parsedDate)
+      setError("")
+    } else {
+      setDate(undefined)
+      setError("Please enter a valid date in MM/DD/YYYY format")
+    }
+  }
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="text-3xl font-bold text-center">The Year of the Snake</CardTitle>
-        <p className="text-center mt-1">commencing on January 29, 2025, is characterized by wisdom, transformation, and adaptability. Associated with intelligence and strategic thinking, this year encourages personal growth and careful decision-making. The Wood element introduces flexibility and creativity, promoting deeper reflection and thoughtful planning. Embracing change and long-term strategies will be beneficial during this period. Overall, the Year of the Snake emphasizes introspection and deliberate action.</p>
+        <p className="text-justify mt-1">
+          The year of the snake, commencing on January 29, 2025, is characterized by wisdom, transformation, and adaptability. 
+          Associated with intelligence and strategic thinking, this year encourages personal growth and 
+          careful decision-making. The Wood element introduces flexibility and creativity, promoting 
+          deeper reflection and thoughtful planning. Embracing change and long-term strategies will be 
+          beneficial during this period. Overall, the Year of the Snake emphasizes introspection and 
+          deliberate action.
+        </p>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Basic Information</h2>
-            <p>
-              <strong>Gregorian Calendar:</strong> {reading.gregorian_calendar}
-            </p>
-            <p>
-              <strong>Gregorian Lunar Calendar:</strong> {reading.gregorian_lunar_calendar}
-            </p>
-            <p>
-              <strong>Lunar Calendar:</strong> {reading.lunar_calendar}
-            </p>
-            <p>
-              <strong>Zodiac:</strong> {reading.zodiac}
-            </p>
-          </div>
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Lucky Colors</h2>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {reading.good_luck_colors_for_this_year.map((color) => (
-                <Badge key={color} variant="outline" className="text-green-600 border-green-600">
-                  {color}
-                </Badge>
-              ))}
-            </div>
-            <h2 className="text-2xl font-semibold mb-2 mt-4">Unlucky Colors</h2>
-            <div className="flex flex-wrap gap-2">
-              {reading.bad_luck_colors_for_this_year.map((color) => (
-                <Badge key={color} variant="outline" className="text-red-600 border-red-600">
-                  {color}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        <Separator className="my-6" />
-        <div className="grid grid-cols-1 gap-6">
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h2 className="text-2xl font-semibold mb-4">Positive Aspects</h2>
-                {reading.good_aspects.map((aspect, index) => (
-                  <div key={index} className="mb-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-semibold">{aspect.aspect}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{aspect.short_reason}</p>
-                  </div>
-                ))}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn("w-[280px] justify-start text-left font-normal", !date && "text-muted-foreground")}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <div className="space-y-2 p-2">
+              <div className="grid gap-2">
+                <Input
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  placeholder="MM/DD/YYYY"
+                  className="w-[240px]"
+                />
+                {error && <p className="text-sm text-destructive">{error}</p>}
               </div>
-              <div>
-                <h2 className="text-2xl font-semibold mb-4">Challenging Aspects</h2>
-                {reading.bad_aspects.map((aspect, index) => (
-                  <div key={index} className="mb-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-semibold">{aspect.aspect}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{aspect.short_reason}</p>
-                  </div>
-                ))}
-              </div>
+              <Calendar mode="single" selected={date} onSelect={handleDateSelect} initialFocus />
             </div>
-          </div>
-        </div>
+          </PopoverContent>
+        </Popover>
+
+        <Button
+          onClick={async () => {
+            if (date) {
+              setLoading(true);
+              try {
+                const response = await fetch('http://localhost:8000/api/fengshui/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ gregorian_birthday: format(date, "yyyy-MM-dd") }),
+                });
+                const data = await response.json();
+                setFengShui(data.reading);
+              } catch (error) {
+                console.error('Error fetching zodiac data:', error);
+              } finally {
+                setLoading(false);
+              }
+            } else {
+              setError("Please select a valid date before submitting");
+            }
+          }}
+        >
+          Read Feng Shui
+        </Button>
+        
+        {loading && <p className="text-sm text-muted-foreground">Please wait while I'm reading your Feng Shui...</p>}
+      
       </CardContent>
+      {error && <p className="text-sm text-destructive">{error}</p>}
+
+      {fengShui ? <FengShuiResults fengShui={fengShui} /> : ""}
     </Card>
   )
 }
-

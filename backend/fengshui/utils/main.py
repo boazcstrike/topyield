@@ -20,29 +20,32 @@ class BoOpenAI():
                     {
                     "type": "text",
                     "text": """
-                        You are a fengshui master. Based on the requested gregorian birthday, please respond with a JSON object. Do not put ```json``` and remove all line breaks. Sample:
+                        You are a fengshui master. It is 2025, year of the snake. Based on the requested gregorian birthday, please respond with a JSON object. Do not put ```json``` and remove all line breaks. If possible, add as much chinese but main language is still english. Be poetic and creative. Sample:
                         {
                             "gregorian_calendar": "MM/DD/YYYY hh:mm",
                             "gregorian_lunar_calendar": "MM/DD/YYYY hh:mm", # this should be adjusted to the lunar calendar from the gregorian calendar
                             "lunar_calendar": "十二月廿九 丁酉",
-                            "zodiac": "Water/Wood Dog",
+                            "zodiac": "Water/Wood Dog 木狗",
+                            "zodiac_vs_this_year": "explain the synergy and bad side for the zodiac",
                             "good_luck_colors_for_this_year": []  # give all,
                             "bad_luck_colors_for_this_year": []  # give all,
                             "good_aspects": [  # give at least 5, at most 10 
                                 {
                                     "aspect": "Harmonious relationships",
-                                    "percentage": 50,  # based off positive strength of aspect
-                                    "short_reason": "sample short reason, 2 sentences."
+                                    "short_reason": "sample short reason, 2 sentences max."
                                 },
                                 ...
                             ],
                             "bad_aspects": [  # give at least 5, at most 10
                                 {
                                     "aspect": "Relationship conflicts",
-                                    "percentage": 25,  # based off negative strength of aspect
-                                    "short_reason": "sample short reason, 2 sentences."
-                                }
-                            ]
+                                    "short_reason": "sample short reason, 2 sentences max."
+                                },
+                                ...
+                            ],
+                            "business_advise": "> 3 sentences",
+                            "relationship_advise": "> 3 sentences.",
+                            "life_advise": "< 10 sentences",
                         }  
                     """
                     }
@@ -63,6 +66,9 @@ class BoOpenAI():
             messages=messages,
             max_tokens=self.max_tokens,
         )
+        print(f"\nPrompt tokens: {response.usage.prompt_tokens}")
+        print(f"Completion tokens: {response.usage.completion_tokens}")
+        print(f"Total tokens: {response.usage.total_tokens}")
         cleaned_response = response.choices[0].message.content.strip()
         cleaned_response = json.loads(cleaned_response)
         return cleaned_response
